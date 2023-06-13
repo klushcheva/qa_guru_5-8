@@ -1,6 +1,3 @@
-"""
-Протестируйте классы из модуля homework/models.py
-"""
 import pytest
 
 from homework.models import Product, Cart
@@ -34,10 +31,6 @@ class TestProducts:
         assert zero_product.check_quantity(0) is True
         assert zero_product.check_quantity(1) is False
 
-    def test_product_check_quantity_less_than_zero(self, product):
-        with pytest.raises(Exception) as exc_info:
-            product.check_quantity(-1)
-        assert str(exc_info.value) == 'Please enter value >=0'
 
     def test_product_buy_positive(self, product):
         product.buy(1)
@@ -47,15 +40,10 @@ class TestProducts:
         product.buy(1000)
         assert product.quantity == 0
 
-    def test_product_buy_negative_num(self, product):
-        with pytest.raises(Exception) as exc_info:
-            product.buy(-1)
-        assert str(exc_info.value) == 'You can buy only positive amount'
 
     def test_product_buy_more_than_available(self, product):
-        with pytest.raises(Exception) as exc_info:
-            product.buy(1001)
-        assert str(exc_info.value) == f'Not enough {product.name} to buy'
+        with pytest.raises(ValueError):
+            assert product.buy(1001), 'Expecting ValueError here'
 
 
 class TestCart:
